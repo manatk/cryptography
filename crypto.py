@@ -1,66 +1,43 @@
+import string
 # Caesar Cipher
 # Arguments: string, integer
 # Returns: string
+
 def encrypt_caesar(plaintext, offset):
     encrypted_text = ""
-    updated_characters = offset_characters(offset)
-    print (updated_characters)
-    for i in plaintext:
-        if ord(i) >= ord('A') and ord(i) <= ord('Z'):
-            print (i)
-            encrypted_text = encrypted_text + updated_characters[i]
-        else:
-            encrypted_text = encrypted_text + i
+    for character in plaintext:
+        encrypted_character = offset_character(character, offset)
+        encrypted_text = encrypted_text + encrypted_character
+    #print("Encrypted is", encrypted_text)
+    return encrypted_text
 
-    print ("Encrypted is", encrypted_text)
+def offset_character(character, offset):
+    #print (character)
+    if character not in string.ascii_uppercase:
+        return character
+    else:
+        char_index = ord(character) - ord('A')
+        final_index = (char_index + offset) % 26
 
-def offset_characters(offset):
-    updated_characters = {}
-    for i in range (ord('A'),ord('Z')+1):
-        if (i + offset > ord('Z')):
-            #print (((i+offset) - ord('A')) % 26)
-            new_ASCII = ord('A') + (((i+offset) - ord('A')) % 26)
-        else:
-            new_ASCII = i + offset
-
-        updated_characters[chr(i)] = chr(new_ASCII)
-    return updated_characters
-
-def decrypt_characters (offset):
-    updated_characters = {}
-
-    for i in range (ord('A'),ord('Z')+1):
-        if (i - offset < ord('A')):
-            new_ASCII = ord('Z') - (((i+offset) - ord('A')) % 26)
-        else:
-            new_ASCII = i - offset
-
-        updated_characters[chr(i)] = chr(new_ASCII)
-    return updated_characters
+        return chr(final_index + ord('A'))
 
 # Arguments: string, integer
 # Returns: string
 def decrypt_caesar(ciphertext, offset):
+
+    decrypt_offset = offset * -1
     decrypted_text = ""
-    decrypted_characters = decrypt_characters(offset)
-    print (decrypted_characters)
-    for i in ciphertext:
-        if ord(i) >= ord('A') and ord(i) <= ord('Z'):
-            #print (i)
-            decrypted_text = decrypted_text + decrypted_characters[i]
-        else:
-            decrypted_text = decrypted_text + i
-
-    print ("Decrypted is", decrypted_text)
-
-    #print (((i+offset) - ord('A')) % 25)
-    #pass
+    for character in ciphertext:
+        decrypted_character = offset_character(character, decrypt_offset)
+        decrypted_text = decrypted_text + decrypted_character
+    #print("Encrypted is", encrypted_text)
+    return decrypted_text
 
 # Vigenere Cipher
 # Arguments: string, string
 # Returns: string
 def encrypt_vigenere(plaintext, keyword):
-    pass
+    #pass
 
 # Arguments: string, string
 # Returns: string
@@ -89,8 +66,8 @@ def decrypt_mhkc(ciphertext, private_key):
     pass
 
 def main():
-    encrypt_caesar("BUZZ", 2)
-    decrypt_caesar("DWBB", 2)
+    print(encrypt_caesar("BUZZ", 2))
+    print (decrypt_caesar("DWBB", 2))
     # Testing code here
     pass
 
