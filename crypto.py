@@ -102,73 +102,53 @@ def create_public_key(private_key):
 # Arguments: string, tuple (W, Q, R)
 # Returns: list of integers
 def encrypt_mhkc(plaintext, public_key):
-    bin_values = []
-    print("Public keys, " , public_key)
-    sum = 0
+    bin_value_list = []
+    n = 8
     A = []
     C = []
+    sum = 0
     for character in plaintext:
-        #make list of binary values
-        #truncate off first two characters [2:]
-        bin_value = bin(ord(character))[2:]
-        bin_values.append(bin_value)
-    for i in bin_values:
-        character_bin = i
-        print(i)
-        #sum = 0
-        binlist_char = []
-        for x in i:
-            binlist_char.append(int(x))
-        A.append(binlist_char)
-    for i in A:
-        for bins in i:
-            count = 0
-            sum = sum + public_key[x]*bins[i][x]
-            print(sum)
+        for binary in bin(ord(character))[2:].zfill(n):
+            bin_value_list.append(int(binary))
+        A.append(bin_value_list)
+        bin_value_list = []
+    for binary_list in A:
+        for i in range(0, len(binary_list)):
+            sum = sum + (binary_list[i] * public_key[i])
+        C.append(sum)
+        sum = 0
+    return(C)
 
-        #C.append(sum(A[i][]))
+def calc_S(R,Q):
+    potential_S = 1
+    while ((potential_S*R) % Q != 1):
+        potential_S = random.randint(2,Q)
+    print(potential_S)
+    return potential_S
 
-'''
-        print(type(i))
-        integer = int(i)
-        print(type(int(i)))
-        for
-        #print(str(i))
-        #print
-        #print(i)
-        #integer = int(i)
-        #print(integer)
-        #print (int(i) for i in )
 
-        #print (int(a) for a in i)
-
-    #print(bin_values)
-
-    #for i in range(0,len(bin_values)):
-        #for
-    #    bin = bin_values[i]
-
-        #print(bin_values[i])
-        #C.append(sum(bin_values))
-        #C.append(sum(bin_values)
-
-#     bin in bin_values:
-    #    n = 0
-    #    bin[n]
-'''
 # Arguments: list of integers, tuple B - a length-n tuple of integers
 # Returns: bytearray or str of plaintext
 def decrypt_mhkc(ciphertext, private_key):
+    W = private_key[0]
+    Q = private_key[1]
+    R = private_key[2]
+    calc_S(Q,R)
+
     pass
+
 
 def main():
     #print(encrypt_caesar("BUZZ", 2))
     #print(decrypt_caesar("DWBB", 2))
     #print(encrypt_vigenere("HELLOMYNAMEISMANAT", "KAUR"))
     #print(decrypt_vigenere("REFCYMSEKMYZCMUEKT", "KAUR"))
+    #private_key = generate_private_key()
+    #public_key = create_public_key(private_key)
     private_key = generate_private_key()
     public_key = create_public_key(private_key)
-    encrypt_mhkc("HELLO", public_key)
+    print(encrypt_mhkc("FOREACHEPSILONGREATERTHANDELTA", public_key))
+    decrypt_mhkc("ABC", private_key)
 
     # Testing code here
     pass
