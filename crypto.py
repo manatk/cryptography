@@ -123,19 +123,153 @@ def calc_S(R,Q):
     potential_S = 1
     while ((potential_S*R) % Q != 1):
         potential_S = random.randint(2,Q)
-    print(potential_S)
     return potential_S
 
 
 # Arguments: list of integers, tuple B - a length-n tuple of integers
 # Returns: bytearray or str of plaintext
 def decrypt_mhkc(ciphertext, private_key):
+    print (ciphertext)
+    print (private_key)
     W = private_key[0]
     Q = private_key[1]
     R = private_key[2]
-    calc_S(Q,R)
+    S = calc_S(R,Q)
+    C_decipher = []
+    binary_info_list = []
+    decrypted = ""
 
-    pass
+    #print(ciphertext)
+    for C_value in ciphertext:
+        ASCII_index = 0
+        binary_information = []
+        C_p = ((C_value * S) % Q)
+        binary_string = ""
+        #print ("C_Value ", C_Value)
+        print ("C_Prime ", C_p)
+        print ("Beginning BINARY_INFO", binary_information)
+
+        #print ("S ", S)
+        #print ("Q ", Q)
+        #C_decipher.append(C_p)
+        for i in range (len(W)-1, -1, -1):
+            print ("W[i] is ", W[i], i)
+            if C_p >= W[i]:
+                binary_information.insert(0,1)
+                C_p = C_p - W[i]
+                #print ("W[i] is " , W[i])
+                #print ("CP IS UPDATED ",  C_p)
+                binary_string = "1" + binary_string
+
+                #print ("W[i] is " , W[i])
+            elif C_p > 0:
+                #print ("CPRIME IS ", C_p)
+                #print (" I IS ", i)
+                binary_information.insert(0,0)
+                binary_string = "0" + binary_string
+            print ("BINARY_INFO", binary_information)
+        #binary_info_list.append(binary_string)
+        print(binary_string)
+        print(binary_information)
+        print(int(binary_string, 2))
+        ASCII_index = int(binary_string, 2)
+        #print (ASCII_index)
+        decrypted = decrypted + chr(ASCII_index)
+        #ASCII_index = 0
+
+        #binary_info_list.append(binary_information)
+        #print("THIS IS INT", int(binary_string, 2))
+        print(decrypted)
+
+    #print (binary_info_list)
+
+'''
+    W = private_key[0]
+    Q = private_key[1]
+    R = private_key[2]
+    S = calc_S(R,Q)
+    C_decipher = []
+    binary_info_list = []
+
+    print(ciphertext)
+    for C_value in ciphertext:
+        binary_information = []
+        binary_string = ""
+        C_p = ((C_value * S) % Q)
+        print(C_value)
+
+        print ("C_Prime ", C_p)
+        print ("S ", S)
+        print ("Q ", Q)
+        #C_decipher.append(C_p)
+
+        for i in range (len(W)-1, -1, -1):
+            print ("CP IS ", C_p)
+            if C_p >= W[i]:
+                binary_information.insert(0,1)
+                C_p = C_p - W[i]
+                #Eprint ("BINARY_INFO", binary_information)
+            else:
+                binary_information.insert(0,0)
+            print ("BINARY_INFO", binary_information)
+        binary_info_list.append(binary_information)
+
+'''
+'''
+        for i in range (len(W)-1, -1, -1):
+            print ("CP ", C_p)
+            if C_p >= W[i]:
+                binary_information.insert(0,1)
+                binary_string = "1" + binary_string
+                C_p = C_p - W[i]
+                #print ("BINARY_INFO", binary_information)
+            elif C_p > 0:
+                binary_information.insert(0,0)
+                binary_string = "0" + binary_string
+            print ("BINARY_INFO", binary_information)
+            #print ("BINARY_STRING", binary_string)
+        print("THIS IS INT", int(binary_string, 2))
+        binary_info_list.append(binary_information)
+'''
+    #print (binary_info_list)
+
+'''
+    W = private_key[0]
+    Q = private_key[1]
+    R = private_key[2]
+    S = calc_S(R,Q)
+    C_decipher = []
+    binary_info_list = []
+
+    print(ciphertext)
+    for C_value in ciphertext:
+        binary_information = []
+        C_p = ((C_value * S) % Q)
+        print(C_value)
+        binary_string = ""
+
+        print ("C_Prime ", C_p)
+        print ("S ", S)
+        print ("Q ", Q)
+        #C_decipher.append(C_p)
+
+        for i in range (len(W)-1, -1, -1):
+            print ("WI IS ", W[i])
+            if C_p >= W[i]:
+                binary_string = "1" + binary_string
+                binary_information.insert(0,1)
+                C_p = C_p - W[i]
+                #Eprint ("BINARY_INFO", binary_information)
+            else:
+                binary_information.insert(0,0)
+                binary_string = "0" + binary_string
+        print ("BINARY_INFO", binary_string)
+        print ("BINARY LIST ", binary_information)
+        binary_info_list.append(binary_information)
+
+    print (binary_info_list)
+
+'''
 
 def test(csv_file, function_call):
     output = ""
@@ -156,13 +290,22 @@ def test(csv_file, function_call):
 
             if function_call == "decrypt_vigenere":
                 output = decrypt_vigenere(split[2], split[1])
-                print(split)
-                print(output)
-                print (split[0] == output)
 
+                print (split[0] == output)
 
             #if output != split[2]:
                 #print("ERROR: ", output, split[0])
+
+def test_MHKC(csv_file):
+    output = ""
+    with open(csv_file, 'r') as f:
+        for line in f:
+            line = line.strip()
+            split = line.split(',')
+            print(split)
+            output = encrypt_mhkc(split[2], split[1])
+            print(output)
+            print(split[3])
 
 
 '''
@@ -184,22 +327,26 @@ def test(csv_file, function_call):
 
 '''
 
-
 def main():
     #print(encrypt_caesar("Z", 3))
-    test("encrypt_vigenere.csv", "decrypt_vigenere")
+    #test("encrypt_vigenere.csv", "decrypt_vigenere")
     #print(decrypt_caesar("DWBB", 2))
     #print(encrypt_vigenere("HELLOMYNAMEISMANAT", "KAUR"))
     #print(decrypt_vigenere("REFCYMSEKMYZCMUEKT", "KAUR"))
     #private_key = generate_private_key()
     #public_key = create_public_key(private_key)
-    private_key = generate_private_key()
+    #private_key = generate_private_key()
     #public_key = create_public_key(private_key)
     #print(encrypt_mhkc("FOREACHEPSILONGREATERTHANDELTA", public_key))
-    decrypt_mhkc("ABC", private_key)
+    #decrypt_mhkc([1129], ((2,7,11,21,42,89,180,354), 881, 588))
+    #decrypt_mhkc([2442, 7212, 1936, 5216, 4596, 6402, 206, 5216, 130, 6516, 4786, 826, 7212, 2632, 7022, 1936, 5216, 4596, 750, 5216, 1936, 750, 206, 4596, 2632, 636, 5216, 826, 750, 4596], ((5, 8, 18, 57, 95, 310, 903, 2290, 5423), 9341, 2))
+    #print(encrypt_mhkc("MICHAELTHIBODEAUX",(18, 36, 60, 153, 411, 693, 2535, 3957)))
+    #test_MHKC("MHKC_tests.csv")
+    decrypt_mhkc([2442, 7212, 1936, 5216, 4596, 6402, 206, 5216, 130, 6516, 4786, 826, 7212, 2632, 7022, 1936, 5216, 4596, 750, 5216, 1936, 750, 206, 4596, 2632, 636, 5216, 826, 750, 4596], ((5, 8, 18, 57, 95, 310, 903, 2290), 9341, 2))
+
+
 
     # Testing code here
-    pass
 
 if __name__ == "__main__":
     main()
