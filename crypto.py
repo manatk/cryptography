@@ -137,17 +137,65 @@ def decrypt_mhkc(ciphertext, private_key):
 
     pass
 
+def test(csv_file, function_call):
+    output = ""
+    with open(csv_file, 'r') as f:
+        for line in f:
+            line = line.strip()
+            split = line.split(',')
+            #print(split)
+
+            if function_call == "encrypt_caesar":
+                output = encrypt_caesar(split[0], int(split[1]))
+
+            if function_call == "decrypt_caesar":
+                output = decrypt_caesar(split[0], int(split[1]))
+
+            if function_call == "encrypt_vigenere":
+                output = encrypt_vigenere(split[0], split[1])
+
+            if function_call == "decrypt_vigenere":
+                output = decrypt_vigenere(split[2], split[1])
+                print(split)
+                print(output)
+                print (split[0] == output)
+
+
+            #if output != split[2]:
+                #print("ERROR: ", output, split[0])
+
+
+'''
+ print(split[2],",", split[1], ",", split[0])
+
+    if function_call == "decrypt_caesar":
+        with open(csv_file, 'r') as f:
+            for line in f:
+                line = line.strip()
+                split = line.split(',')
+                print(split)
+                output = decrypt_caesar(split[0], int(split[1]))
+                print (output)
+                if output != split[2]:
+                    print("ERROR: ", output, split[0])
+
+    if function_call == "encrypt_vigenere":
+
+
+'''
+
 
 def main():
-    #print(encrypt_caesar("BUZZ", 2))
+    #print(encrypt_caesar("Z", 3))
+    test("encrypt_vigenere.csv", "decrypt_vigenere")
     #print(decrypt_caesar("DWBB", 2))
     #print(encrypt_vigenere("HELLOMYNAMEISMANAT", "KAUR"))
     #print(decrypt_vigenere("REFCYMSEKMYZCMUEKT", "KAUR"))
     #private_key = generate_private_key()
     #public_key = create_public_key(private_key)
     private_key = generate_private_key()
-    public_key = create_public_key(private_key)
-    print(encrypt_mhkc("FOREACHEPSILONGREATERTHANDELTA", public_key))
+    #public_key = create_public_key(private_key)
+    #print(encrypt_mhkc("FOREACHEPSILONGREATERTHANDELTA", public_key))
     decrypt_mhkc("ABC", private_key)
 
     # Testing code here
