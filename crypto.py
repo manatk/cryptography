@@ -105,7 +105,6 @@ def create_public_key(private_key):
         #add B values
         B_list.append((R * W[i]) % Q)
     B = tuple(B_list)
-    #print (B)
     return(B)
 
 # Arguments: string, tuple (W, Q, R)
@@ -166,10 +165,8 @@ def decrypt_mhkc(ciphertext, private_key):
             elif C_p > 0:
                 #binary_information.insert(0,0)
                 binary_string = "0" + binary_string
-            print(binary_string)
         #convert binary_string value into integer
         ASCII_index = int(binary_string, 2)
-        print(chr(ASCII_index))
         #add corresponding ASCII character to decrypted string
         decrypted = decrypted + chr(ASCII_index)
     return(decrypted)
@@ -198,7 +195,7 @@ def test(csv_file, function_call):
 
 def main():
     #print(encrypt_caesar("", 3))
-    #test("encrypt_vigenere.csv", "decrypt_vigenere")
+    test("encrypt_vigenere.csv", "decrypt_vigenere")
     #print(decrypt_caesar("", 2))
     #print(encrypt_vigenere("MANAT", "KAUR"))
     #print(decrypt_vigenere("REFCYMSEKMYZCMUEKT", "KAUR"))
@@ -211,9 +208,9 @@ def main():
     #print("DECRYPTED IS " + decrypt_mhkc(encrypted, private_key))
     #decrypt_mhkc([1129], ((2,7,11,21,42,89,180,354), 881, 588))
     #decrypt_mhkc([2442, 7212, 1936, 5216, 4596, 6402, 206, 5216, 130, 6516, 4786, 826, 7212, 2632, 7022, 1936, 5216, 4596, 750, 5216, 1936, 750, 206, 4596, 2632, 636, 5216, 826, 750, 4596], ((5, 8, 18, 57, 95, 310, 903, 2290, 5423), 9341, 2))
-    #print(encrypt_mhkc("MICHAELTHIBODEAUX",(18, 36, 60, 153, 411, 693, 2535, 3957)))
+    #print(encrypt_mhkc("FOREACHEPSILONGREATERTHANDELTA",(50, 70, 175, 575, 1240, 3385, 7065, 7978)))
     #test_MHKC("MHKC_tests.csv")
-    #decrypt_mhkc([2442, 7212, 1936, 5216, 4596, 6402, 206, 5216, 130, 6516, 4786, 826, 7212, 2632, 7022, 1936, 5216, 4596, 750, 5216, 1936, 750, 206, 4596, 2632, 636, 5216, 826, 750, 4596], ((5, 8, 18, 57, 95, 310, 903, 2290), 9341, 2))
+    #print(decrypt_mhkc([], ((10, 14, 35, 115, 248, 677, 1413, 3644), 10242, 5)))
 
     # Testing code here
 
